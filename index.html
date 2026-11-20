@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ENCOR v1.2 — Syslog, NetFlow &amp; SPAN Assurance Explorer</title>
+    <script>
+      if (window.self === window.top) {
+        window.location.replace("https://qaswarh.github.io/4any1");
+      }
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-layout">
+      <!-- Left Column: Searchable Network Assurance Knowledge Base -->
+      <aside class="glossary-panel">
+        <div class="glossary-search-wrap">
+          <input
+            type="text"
+            id="glossarySearch"
+            class="glossary-search"
+            placeholder="Filter Assurance terms (e.g., Syslog, NetFlow, ERSPAN, SNMPv3, IP SLA)..."
+          />
+        </div>
+        <div id="glossaryNoResults" class="no-results hidden">
+          No matching terms found.
+        </div>
+
+        <div id="glossaryAssur">
+          <h2>Network Assurance Knowledge Base</h2>
+          <p class="glossary-intro">
+            ENCOR 350-401 v1.2 Domain 4 (Network Assurance — 10%) reference for
+            Syslog, Flexible NetFlow, SPAN, IP SLA, and SNMPv3.
+          </p>
+
+          <div class="glossary-cat">Syslog &amp; Logging</div>
+          <div class="term-card">
+            <h3>Syslog Severity Levels (0–7) &amp; UDP 514</h3>
+            <p>
+              Cisco IOS-XE classifies log messages from
+              <strong>0 (Emergencies)</strong> down to
+              <strong>7 (Debugging)</strong>. Configuring
+              <code>logging trap &lt;level&gt;</code> forwards all messages with
+              a severity number
+              <strong>less than or equal to (&le;)</strong> the configured level
+              to the Syslog server on <strong>UDP 514</strong> (default is
+              <code>informational</code> / level 6).
+            </p>
+          </div>
+          <div class="term-card">
+            <h3>Syslog Message Format</h3>
+            <p>
+              Standard IOS format:
+              <code>%FACILITY-SEVERITY-MNEMONIC: description</code> (e.g.,
+              <code>%LINEPROTO-5-UPDOWN</code>). Include
+              <code>service timestamps log datetime msec</code> for accurate
+              forensic correlation across devices.
+            </p>
+          </div>
+
+          <div class="glossary-cat">Packet Capture &amp; Traffic Telemetry</div>
+          <div class="term-card">
+            <h3>SPAN, RSPAN &amp; ERSPAN (Port Mirroring)</h3>
+            <p>
+              <strong>SPAN (Switched Port Analyzer):</strong> Mirrors local
+              source ports/VLANs to a local destination port on the same switch.
+              <strong>RSPAN (Remote SPAN):</strong> Carries mirrored traffic
+              across Layer 2 trunks using a dedicated
+              <code>remote-span</code> VLAN.
+              <strong>ERSPAN (Encapsulated Remote SPAN):</strong> Encapsulates
+              mirrored frames in <strong>GRE (IP Protocol 47)</strong> to reach
+              a remote analyzer across a Layer 3 routed network.
+            </p>
+          </div>
+          <div class="term-card">
+            <h3>Flexible NetFlow (FNF) Architecture</h3>
+            <p>
+              Exports IP flow telemetry (UDP <code>2055</code> or
+              <code>9995</code>) using three modular building blocks:
+              <strong>1. Flow Record</strong> (defines key match fields like
+              Src/Dst IP, Ports, Protocol, ToS, and non-key collect counters),
+              <strong>2. Flow Exporter</strong> (destination collector IP, UDP
+              port, source interface), and
+              <strong>3. Flow Monitor</strong> (binds Record + Exporter and is
+              applied to an interface).
+            </p>
+          </div>
+
+          <div class="glossary-cat">Active Probing &amp; SNMPv3</div>
+          <div class="term-card">
+            <h3>IP SLA (Internet Protocol Service Level Agreement)</h3>
+            <p>
+              Generates synthetic active probe traffic (ICMP Echo, UDP Jitter,
+              HTTP, DNS) to measure latency, jitter, packet loss, and MOS voice
+              quality. Often paired with <strong>Object Tracking</strong> (<code
+                >track 1 ip sla 1 reachability</code
+              >) for automated static route or HSRP failover.
+            </p>
+          </div>
+          <div class="term-card">
+            <h3>SNMPv3 Security Levels (Simple Network Management Protocol)</h3>
+            <p>
+              Uses UDP <code>161</code> (polling) and UDP
+              <code>162</code> (traps) with User-based Security Model (USM):
+              <strong>noAuthNoPriv</strong> (username only, no auth/encryption),
+              <strong>authNoPriv</strong> (SHA/HMAC authentication, no
+              encryption), and <strong>authPriv</strong> (SHA authentication +
+              AES encryption — Cisco recommended).
+            </p>
+          </div>
+        </div>
+      </aside>
+      <!-- Right Column: Interactive Network Assurance Simulators -->
+      <main class="visualizer-column">
+        <div class="net-widget">
+          <div class="mode-tabs">
+            <button type="button" class="mode-tab active" id="tabSyslog">
+              Syslog Severity Filter (0–7)
+            </button>
+            <button type="button" class="mode-tab" id="tabSpan">
+              SPAN / RSPAN / ERSPAN
+            </button>
+            <button type="button" class="mode-tab" id="tabNetflow">
+              Flexible NetFlow Builder
+            </button>
+          </div>
+
+          <!-- TAB 1: SYSLOG SEVERITY FILTER SIMULATOR -->
+          <div id="panelSyslog">
+            <div class="sim-header">
+              <div>
+                <h1>Cisco IOS-XE Syslog Trap Threshold Simulator (UDP 514)</h1>
+                <p class="sim-sub">
+                  Change <code>logging trap</code> to see which severity levels
+                  (&le; configured threshold) are sent to the Syslog server.
+                </p>
+              </div>
+              <select id="syslogTrapSelect" class="scenario-select">
+                <option value="0">logging trap 0 (emergencies)</option>
+                <option value="1">logging trap 1 (alerts)</option>
+                <option value="2">logging trap 2 (critical)</option>
+                <option value="3">logging trap 3 (errors)</option>
+                <option value="4" selected>logging trap 4 (warnings)</option>
+                <option value="5">logging trap 5 (notifications)</option>
+                <option value="6">
+                  logging trap 6 (informational — IOS Default)
+                </option>
+                <option value="7">logging trap 7 (debugging)</option>
+              </select>
+            </div>
+
+            <div class="verdict-banner" id="syslogSummary"></div>
+            <div class="syslog-list" id="syslogList"></div>
+          </div>
+
+          <!-- TAB 2: SPAN / RSPAN / ERSPAN EXPLORER -->
+          <div id="panelSpan" class="hidden">
+            <div class="sim-header">
+              <div>
+                <h1>SPAN, RSPAN &amp; ERSPAN Traffic Mirroring Visualizer</h1>
+                <p class="sim-sub">
+                  Compare local Layer 2 mirroring, Layer 2 trunk RSPAN VLANs,
+                  and Layer 3 GRE-encapsulated ERSPAN.
+                </p>
+              </div>
+              <select id="spanSelect" class="scenario-select">
+                <option value="span">1. Local SPAN (Same Switch)</option>
+                <option value="rspan">
+                  2. Remote SPAN — RSPAN (Across L2 Trunks)
+                </option>
+                <option value="erspan">
+                  3. Encapsulated RSPAN — ERSPAN (Across L3 Routed Network)
+                </option>
+              </select>
+            </div>
+
+            <div class="metrics-bar" id="spanMetrics"></div>
+            <div class="explain-box" id="spanExplain"></div>
+            <div class="sub-label">Cisco IOS-XE Reference Configuration:</div>
+            <pre class="code-pre" id="spanCli"></pre>
+          </div>
+
+          <!-- TAB 3: FLEXIBLE NETFLOW ARCHITECTURE BUILDER -->
+          <div id="panelNetflow" class="hidden">
+            <div class="sim-header">
+              <div>
+                <h1>Flexible NetFlow (FNF) Component &amp; CLI Explorer</h1>
+                <p class="sim-sub">
+                  Click each Flexible NetFlow building block to inspect how
+                  Record, Exporter, and Monitor link together.
+                </p>
+              </div>
+            </div>
+
+            <div class="nf-pills" id="nfPills"></div>
+            <div class="explain-box" id="nfExplain"></div>
+            <div class="sub-label">
+              Cisco IOS-XE Flexible NetFlow CLI Snippet:
+            </div>
+            <pre class="code-pre" id="nfCli"></pre>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

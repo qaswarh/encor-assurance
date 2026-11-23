@@ -109,22 +109,53 @@
               AES encryption — Cisco recommended).
             </p>
           </div>
-          <div class="glossary-cat">Assurance &amp; Telemetry Acronyms</div>
+          <div class="glossary-cat">
+            Assurance &amp; Telemetry Concepts &amp; Acronyms
+          </div>
           <div class="term-card">
             <h3>
-              SPAN, RSPAN, ERSPAN, FNF, IPFIX, ToS, MOS, HSRP, USM, SHA, HMAC,
-              AES
+              Traffic Mirroring, Flow Telemetry &amp; Management Security (SPAN,
+              RSPAN, ERSPAN, FNF, IPFIX, ToS, MOS, HSRP, USM, SHA, HMAC, AES)
             </h3>
             <p>
-              <strong>SPAN / RSPAN / ERSPAN:</strong> Switched Port Analyzer /
-              Remote SPAN / Encapsulated Remote SPAN.
-              <strong>FNF / IPFIX / ToS:</strong> Flexible NetFlow / IP Flow
-              Information Export / Type of Service.
-              <strong>MOS / HSRP:</strong> Mean Opinion Score / Hot Standby
-              Router Protocol.
-              <strong>USM / SHA / HMAC / AES:</strong> User-based Security Model
-              / Secure Hash Algorithm / Hash-based Message Authentication Code /
-              Advanced Encryption Standard.
+              <strong
+                >SPAN / RSPAN / ERSPAN (Switched Port Analyzer / Remote SPAN /
+                Encapsulated Remote SPAN):</strong
+              >
+              Local <strong>SPAN</strong> mirrors ingress/egress frames from
+              source ports or VLANs to a local analyzer port;
+              <strong>RSPAN</strong> carries mirrored frames across Layer 2
+              trunks using a dedicated <code>remote-span</code> VLAN;
+              <strong>ERSPAN</strong> encapsulates mirrored frames in
+              <strong>GRE</strong> packets so traffic can traverse routed Layer
+              3 networks to a remote collector.
+              <strong
+                >FNF &amp; IPFIX (Flexible NetFlow / IP Flow Information
+                Export):</strong
+              >
+              <strong>FNF</strong> exports customizable flow records
+              (source/destination IP, ports, protocol, packet/byte counts, and
+              the 8-bit IPv4 <strong>ToS — Type of Service</strong> / DSCP
+              field) via UDP to a collector; <strong>IPFIX</strong> is the open
+              IETF standard based on NetFlow v9.
+              <strong>MOS &amp; HSRP:</strong>
+              <strong>MOS (Mean Opinion Score)</strong> is a
+              <code>1.0–5.0</code> voice quality metric calculated by IP SLA UDP
+              jitter probes (<code>&gt;4.0</code> is toll-quality);
+              <strong>HSRP (Hot Standby Router Protocol)</strong> provides
+              default-gateway redundancy using a virtual IP/MAC (UDP
+              <code>1985</code>, multicast <code>224.0.0.2</code> v1 /
+              <code>224.0.0.102</code> v2, default priority <code>100</code>,
+              preempt off by default).
+              <strong>SNMPv3 USM (User-based Security Model):</strong> Secures
+              network management polling/traps via three security
+              levels—<code>noAuthNoPriv</code>, <code>authNoPriv</code>, and
+              <code>authPriv</code>—using
+              <strong>HMAC (Hash-based Message Authentication Code)</strong>
+              paired with <strong>SHA (Secure Hash Algorithm)</strong> for
+              packet integrity/authentication and
+              <strong>AES (Advanced Encryption Standard)</strong> for payload
+              encryption.
             </p>
           </div>
         </div>
